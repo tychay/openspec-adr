@@ -99,3 +99,25 @@ Format:
 
 When creating a new `openspec/` directory (for a submodule, new project, etc.),
 also create a sibling `adr/` directory with an empty `INDEX.md`.
+
+## Extraction Skills
+
+Three skills support ADR extraction from existing documentation:
+
+- **`evaluate-file-for-adrs`** — Subskill. Takes a source file/folder and target
+  `adr/` path. Produces a structured candidate list. Does NOT write files. Use
+  when you need to assess a document for ADR content without committing to writing.
+
+- **`add-adrs-from-file`** — Skill. Wraps evaluate + markdown approval + write.
+  Takes a single source and target `adr/` path. Use for ad hoc extraction from
+  one document at a time (ongoing, after bootstrap).
+
+- **`bootstrap-adrs`** — Workflow. Interactive: builds source list with user,
+  evaluates all sources, deduplicates across sources, prunes inactive, checks
+  overlap, then writes. Use for initial population of an empty `adr/` directory.
+
+### When to use which
+
+- First time populating `adr/` for a project → `bootstrap-adrs`
+- Adding ADRs from a new document after initial bootstrap → `add-adrs-from-file`
+- Just checking what ADRs a document contains (no write) → `evaluate-file-for-adrs`
