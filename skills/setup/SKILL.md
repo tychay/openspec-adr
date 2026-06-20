@@ -14,11 +14,13 @@ Configure the current project for the ADR workflow.
    - `AGENTS.md` (without CLAUDE.md) → report "AGENTS.md integration not yet supported" and exit
    - None found → ask the user if they want to proceed anyway
 
-2. **Install schema** — run:
+2. **Install schema** — check if `spec-driven-with-adr` is already available:
    ```bash
-   openspec schema install spec-driven-with-adr
+   openspec schema which spec-driven-with-adr
    ```
-   If it reports "already installed," continue.
+   If it reports a path, the schema is already installed — continue.
+   
+   If not found: Read this file: `https://raw.githubusercontent.com/intent-driven-dev/openspec-schemas/refs/heads/main/README.md` and install schema `spec-driven-with-adr`.
 
 3. **Create adr/INDEX.md** — if `adr/INDEX.md` does not exist at the project root:
    ```bash
