@@ -1,104 +1,48 @@
-# OpenSpec ADR (spec-driven-with-adr)
+# OpenSpec ADR
 
-Portable rules and schema for integrating Architecture Decision Records into the
-OpenSpec spec-driven workflow. Include this as a submodule in any project that
-uses OpenSpec and wants durable architectural decision capture.
+A Claude Code plugin that integrates Architecture Decision Records into the OpenSpec spec-driven workflow. Provides extraction skills for populating ADRs from existing documentation and a setup command for project configuration.
 
-## What's Here
+## Installation
 
-```
-ai/openspec-adr/
-├── README.md              ← you are here (install + bootstrap instructions)
-├── CLAUDE-RULES.md        ← portable ADR operational rules for Claude
-├── .claude/skills/
-│   ├── evaluate-file-for-adrs.md  ← subskill: extract ADR candidates from a doc
-│   ├── add-adrs-from-file.md      ← skill: evaluate + approve + write (single source)
-│   └── bootstrap-adrs.md          ← workflow: initial population from multiple sources
-└── schemas/
-    └── spec-driven-with-adr/  ← schema files (schema.yaml + templates)
-```
+### Claude Code
 
-## Install
-
-### 1. Add this submodule to your project
-
+Register the marketplace and install:
 ```bash
-git submodule add <remote-url> ai/openspec-adr
+claude plugin marketplace add tychay/openspec-adr
+claude plugin install osadr
 ```
 
-### 2. Copy the schema into your project's openspec
+### After install
 
-```bash
-cp -r ai/openspec-adr/schemas/spec-driven-with-adr openspec/schemas/
+Run the setup command to configure your project:
+```
+/osadr:setup
 ```
 
-### 3. Update openspec config
+This installs the `spec-driven-with-adr` schema and creates `adr/INDEX.md` if needed.
 
-In `openspec/config.yaml`:
-```yaml
-schema: spec-driven-with-adr
-```
+## Skills
 
-### 4. Create `adr/` directories
+| Skill | Description |
+|-------|-------------|
+| `/osadr:setup` | Install schema and create adr/INDEX.md (one-time) |
+| `/osadr:bootstrap-adrs` | Initial population: evaluate multiple sources, deduplicate, write |
+| `/osadr:add-adrs-from-file` | Ongoing: extract ADRs from a single source |
+| `/osadr:evaluate-file-for-adrs` | Evaluate a source for candidates without writing |
+| `/osadr:understand-adr-rules` | Load the full ADR workflow rules into context |
 
-At your project root and each submodule that has its own `openspec/`:
-```bash
-mkdir -p adr
-```
+## How it works
 
-Each `adr/` directory needs an `INDEX.md` listing in-force ADRs:
-```markdown
-# Active ADRs
+After setup, use `/osadr:bootstrap-adrs` for initial ADR population from existing docs, then `/osadr:add-adrs-from-file` as new decisions are made. The extraction skills apply a 4-point heuristic (constrains future work, has alternatives, outlives the change, non-obvious) and present candidates for approval before writing.
 
-Currently-in-force architectural decisions for this scope.
+## Development
 
-<!-- Format: - [NNNN-title](NNNN-title.md) — one-line summary -->
-```
+Assumes the local marketplace is already registered and the plugin is installed with the cache symlinked to this source directory.
 
-### 5. Reference rules from CLAUDE.md
+**Dev loop:**
 
-Add to your project's CLAUDE.md (in the OpenSpec or workflow section):
-```markdown
-- **ADR Workflow:** See `ai/openspec-adr/CLAUDE-RULES.md` for ADR operational rules.
-```
+1. Edit source files directly in this directory
+2. Pick up changes: **Cmd-Shift-P > "Developer: Reload Window"** (VSCode)
+3. Validate structure: `claude plugin validate ./path/to/openspec-adr`
 
-### 6. Validate
-
-```bash
-openspec schema validate
-```
-
-## Bootstrapping ADRs from Existing Documentation
-
-If your project already has architectural decisions scattered across design docs,
-vault notes, archived changes, etc., use the extraction skills:
-
-### Quick start (bootstrap)
-
-Run the `bootstrap-adrs` skill targeting your project:
-1. It asks which documents to evaluate
-2. It extracts candidates using the 4-point heuristic
-3. It deduplicates and prunes inactive decisions
-4. You approve/reject in markdown
-5. It writes ADR files and updates INDEX.md
-
-### Ad hoc (ongoing)
-
-After bootstrap, use `add-adrs-from-file` when you encounter a new document
-with architectural decisions worth capturing.
-
-### Manual (fallback)
-
-Without the skills:
-1. Identify decisions using the heuristic in CLAUDE-RULES.md (constrains future
-   work, has alternatives, outlives the change, non-obvious)
-2. Create ADR files in `adr/` with sequential numbering
-3. Update `adr/INDEX.md` with the new entries
-
-## Philosophy
-
-This uses `spec-driven-with-adr` (not `intent-driven`):
-- ADR step is additive, not a gate — skippable when no architectural consequence
-- "adr-last" approach: it's okay to capture decisions after implementation
-- Fallback: projects without this schema use `spec-driven` and note decisions in
-  design.md for later extraction
+**Publishing changes:** Bump `version` in `plugin.json` before pushing — consumers pick up new versions via `claude plugin update`.

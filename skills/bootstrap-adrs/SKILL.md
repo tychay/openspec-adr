@@ -1,8 +1,14 @@
+---
+description: Interactive workflow for initially populating an adr/ directory from existing documentation — evaluates multiple sources, deduplicates, and writes the final set
+---
+
 # bootstrap-adrs
 
 Interactive workflow for populating an `adr/` directory from existing
-documentation. Orchestrates `evaluate-file-for-adrs` across multiple sources,
+documentation. Orchestrates `/osadr:evaluate-file-for-adrs` across multiple sources,
 deduplicates, and writes the final set.
+
+If you need the full ADR format spec and heuristic, invoke `/osadr:understand-adr-rules`.
 
 ---
 
@@ -18,7 +24,7 @@ deduplicates, and writes the final set.
 
 Resolve the target `adr/` path (e.g., `tools/things-sync/adr/`).
 
-If `adr/` or `adr/INDEX.md` doesn't exist → STOP. Tell user to create them first.
+If `adr/` or `adr/INDEX.md` doesn't exist → STOP. Tell user to create them first (or run `/osadr:setup`).
 
 ### Step 2: Build source list (interactive)
 
@@ -30,21 +36,11 @@ Suggest likely sources for the target project:
 
 Present the suggested list to the user. Ask them to confirm, add, or remove sources.
 
-Example:
-```
-I suggest evaluating these sources for <target>:
-1. tychay-ai-vault/mystuff/actionables/WORK- Alien Intelligence/things-sync-workflow.md
-2. tools/things-sync/openspec/changes/2026-06-08-initial-sync/ (archived)
-3. tools/things-sync/openspec/changes/2026-06-10-batch-ops/ (archived)
-
-Add or remove any? Or confirm to proceed.
-```
-
 Wait for user confirmation before proceeding.
 
 ### Step 3: Evaluate each source
 
-For each confirmed source, invoke `evaluate-file-for-adrs` with:
+For each confirmed source, invoke `/osadr:evaluate-file-for-adrs` with:
 - Source: the file/folder
 - Target: the target `adr/` path
 
@@ -82,7 +78,7 @@ Report any contradictions or supersession relationships found.
 
 ### Step 7: Present for approval
 
-Present the final candidate list in markdown format (same format as `add-adrs-from-file` Step 2).
+Present the final candidate list in markdown format (same format as `/osadr:add-adrs-from-file` Step 2).
 
 Default verdicts based on confidence. Wait for user confirmation.
 

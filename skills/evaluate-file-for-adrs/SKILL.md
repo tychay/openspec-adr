@@ -1,7 +1,13 @@
+---
+description: Evaluate a source file or folder for ADR candidates — produces a structured candidate list without writing files
+---
+
 # evaluate-file-for-adrs
 
 Evaluate a source file (or folder) for ADR candidates. Produces structured
 candidate list — does NOT write files.
+
+If you need the full ADR heuristic and format spec, invoke `/osadr:understand-adr-rules`.
 
 ---
 
@@ -57,7 +63,7 @@ When the source is an OpenSpec archive directory:
 
 **Date derivation:**
 - Use the archive folder name date if it follows `YYYY-MM-DD-*` pattern
-- Otherwise use the latest date found inside the documents (design.md dates, proposal dates)
+- Otherwise use the latest date found inside the documents
 - Fallback: file modification time
 
 **Status determination:**
@@ -68,19 +74,19 @@ When the source is an OpenSpec archive directory:
 - If unclear → status: `uncertain`
 
 **Where to look for decisions:**
-- `design.md` — Decisions section is the primary source (these ARE architectural decisions by definition)
+- `design.md` — Decisions section is the primary source
 - `proposal.md` — Impact section may contain structural constraints
-- `adr.md` or `adr/*.md` — if the archive already produced ADRs, note them for dedup
+- `adr.md` or `adr/*.md` — if the archive already produced ADRs, note for dedup
 
 ---
 
 ## Section B: Default Evaluator
 
-When the source is a general document (vault doc, research-discuss, meeting notes, etc.):
+When the source is a general document:
 
 **Date derivation:**
 - Look for explicit dates in frontmatter (`created:`, `date:`, `modified:`)
-- Look for dates within the content near the decision ("decided on 2026-06-06")
+- Look for dates within the content near the decision
 - Use git history (`git log --follow -- <path>`) for first-commit date
 - Fallback: file modification time
 
@@ -94,7 +100,7 @@ When the source is a general document (vault doc, research-discuss, meeting note
 **Where to look for decisions:**
 - Scan for patterns: "we do X because Y", "X not Y because Z", "decided to...", "the rule is..."
 - Look for sections named: "Architecture", "Decisions", "Design choices", "Key rules", "Constraints"
-- In research-discuss files: Claude's blockquoted recommendations that the user confirmed
+- In research-discuss files: blockquoted recommendations that the user confirmed
 
 ---
 
@@ -103,14 +109,14 @@ When the source is a general document (vault doc, research-discuss, meeting note
 Each candidate is a structured object:
 
 ```
-title:        Short decision title (e.g., "Park tasks rather than delete")
+title:        Short decision title
 status:       active | inactive | uncertain
-date:         YYYY-MM-DD (best estimate of when decision was made)
+date:         YYYY-MM-DD (best estimate)
 context:      1-3 sentences: what prompted this decision
 decision:     1-3 sentences: the choice, stated clearly
 consequences: 1-3 sentences: what becomes easier/harder
 confidence:   high | medium | low
-reasoning:    Why this was identified as an ADR candidate (which criteria matched)
+reasoning:    Why this was identified as an ADR candidate
 source_ref:   Path to source file + section/line if identifiable
 target_scope: The target adr/ path (echoed from input)
 ```
@@ -129,4 +135,4 @@ target_scope: The target adr/ path (echoed from input)
 - Does NOT ask for user approval
 - Does NOT modify any files
 
-It produces a candidate list. The calling skill (`add-adrs-from-file` or `bootstrap-adrs`) handles everything after evaluation.
+It produces a candidate list. The calling skill (`/osadr:add-adrs-from-file` or `/osadr:bootstrap-adrs`) handles everything after evaluation.

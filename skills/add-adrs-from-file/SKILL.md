@@ -1,7 +1,13 @@
+---
+description: Evaluate a source file for ADR candidates, present for approval, and write approved ADRs to the target directory
+---
+
 # add-adrs-from-file
 
 Evaluate a source file for ADR candidates, present for approval, and write
 approved ADRs to the target directory.
+
+If you need the full ADR format spec and heuristic, invoke `/osadr:understand-adr-rules`.
 
 ---
 
@@ -16,7 +22,7 @@ approved ADRs to the target directory.
 
 ### Step 1: Evaluate
 
-Invoke `evaluate-file-for-adrs` with the source path and target adr/ path.
+Invoke `/osadr:evaluate-file-for-adrs` with the source path and target adr/ path.
 This produces a candidate list.
 
 If zero candidates are found → report "No ADR candidates found in <source>" and exit.
@@ -104,6 +110,6 @@ Append only. Do not rewrite or reorder existing entries.
 
 ## Error Handling
 
-- If target `adr/` directory doesn't exist → STOP. Tell user: "Target directory <path> does not exist. Create it with an INDEX.md first."
+- If target `adr/` directory doesn't exist → STOP. Tell user: "Target directory <path> does not exist. Create it with an INDEX.md first (or run `/osadr:setup`)."
 - If target `adr/INDEX.md` doesn't exist → STOP. Tell user: "No INDEX.md found in <path>. Create one first."
 - If all candidates are rejected → report "All candidates rejected, no ADRs written." and exit.

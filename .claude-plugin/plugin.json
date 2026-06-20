@@ -1,0 +1,10 @@
+{
+  "name": "osadr",
+  "displayName": "OpenSpec ADR",
+  "version": "1.0.0",
+  "description": "Architecture Decision Records for the OpenSpec spec-driven workflow",
+  "author": {
+    "name": "tychay"
+  },
+  "repository": "https://github.com/tychay/openspec-adr"
+}
