@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CMD=$(cat /dev/stdin | jq -r '.tool_input.command // empty'); echo \"$CMD\" | grep -q 'mkdir' || exit 0; TARGET=$(echo \"$CMD\" | grep -oE 'mkdir[^;|&]*' | sed 's/mkdir *-p *//;s/mkdir *//' | tr -d '\"' | xargs); echo \"$TARGET\" | grep -qE 'openspec/?$|openspec/(specs|changes|schemas)/?$' && echo 'BLOCK: Do not mkdir openspec directories. Use: cd <project> && openspec init --tools claude --force' && exit 2; exit 0"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CMD=$(cat /dev/stdin | jq -r '.tool_input.command // empty'); echo \"$CMD\" | grep -q 'openspec init' || exit 0; echo 'openspec init detected — verify openspec/config.yaml has schema: spec-driven-with-adr (not spec-driven). Also verify openspec/schemas/spec-driven-with-adr/ exists.'"
+          }
+        ]
+      }
+    ]
+  }
+}
