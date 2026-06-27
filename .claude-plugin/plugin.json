@@ -1,7 +1,7 @@
 {
   "name": "osadr",
   "displayName": "OpenSpec ADR",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Architecture Decision Records for the OpenSpec spec-driven workflow",
   "author": {
     "name": "tychay"
