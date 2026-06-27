@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "CMD=$(cat /dev/stdin | jq -r '.tool_input.command // empty'); echo \"$CMD\" | grep -q 'openspec init' || exit 0; echo 'openspec init detected — verify openspec/config.yaml has schema: spec-driven-with-adr (not spec-driven). Also verify openspec/schemas/spec-driven-with-adr/ exists.'"
+            "command": "CMD=$(cat /dev/stdin | jq -r '.tool_input.command // empty'); echo \"$CMD\" | grep -q 'openspec init' || exit 0; echo 'openspec init detected — verify openspec/config.yaml has schema: spec-driven-with-adr (not spec-driven).'"
           }
         ]
       }

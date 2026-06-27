@@ -24,7 +24,7 @@ If you need the full ADR format spec and heuristic, invoke `/osadr:understand-ad
 
 Resolve the target `adr/` path (e.g., `tools/things-sync/adr/`).
 
-If `adr/` or `adr/INDEX.md` doesn't exist → STOP. Tell user to create them first (or run `/osadr:setup`).
+If `adr/` doesn't exist → STOP. Tell user to create it first (or run `/osadr:setup`).
 
 ### Step 2: Build source list (interactive)
 
@@ -92,9 +92,7 @@ For each candidate:
 1. Write `NNNN-kebab-title.md` with standard ADR format
 2. Include provenance in Context section: "Extracted from [[<source>]], originally decided ~<date>."
 
-After all files are written, append all new entries to `adr/INDEX.md`.
-
-Report: "Wrote N ADRs to <target adr/ path>. INDEX.md updated."
+Report: "Wrote N ADRs to <target adr/ path>."
 
 ---
 

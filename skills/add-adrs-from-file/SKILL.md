@@ -96,20 +96,9 @@ Extracted from [[<source filename without extension>]], originally decided ~<dat
 
 **Write files in date order** (oldest first) so numbering reflects chronology.
 
-### Step 4: Update INDEX.md
-
-Append new entries to `adr/INDEX.md`:
-
-```markdown
-- [NNNN-kebab-title](NNNN-kebab-title.md) — <one-line summary of decision>
-```
-
-Append only. Do not rewrite or reorder existing entries.
-
 ---
 
 ## Error Handling
 
-- If target `adr/` directory doesn't exist → STOP. Tell user: "Target directory <path> does not exist. Create it with an INDEX.md first (or run `/osadr:setup`)."
-- If target `adr/INDEX.md` doesn't exist → STOP. Tell user: "No INDEX.md found in <path>. Create one first."
+- If target `adr/` directory doesn't exist → STOP. Tell user: "Target directory <path> does not exist. Create it first (or run `/osadr:setup`)."
 - If all candidates are rejected → report "All candidates rejected, no ADRs written." and exit.
